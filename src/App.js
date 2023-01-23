@@ -6,6 +6,13 @@ import Header from './components/Header';
 import InputTodo from './components/InputTodo';
 
 const App = () => {
+  function getInitialTodos() {
+    // getting stored items
+    const temp = localStorage.getItem('todos');
+    const savedTodos = JSON.parse(temp);
+    return savedTodos || [];
+  }
+
   const [todos, setTodos] = useState(getInitialTodos());
 
   const handleCheck = (id) => {
@@ -38,10 +45,11 @@ const App = () => {
   const setUpdate = (updatedTitle, id) => {
     setTodos(
       todos.map((todo) => {
-        if (todo.id === id) {
-          todo.title = updatedTitle;
+        const todo2 = todo;
+        if (todo2.id === id) {
+          todo2.title = updatedTitle;
         }
-        return todo;
+        return todo2;
       }),
     );
   };
@@ -65,13 +73,6 @@ const App = () => {
   //     setTodos(loadedTodos)
   //   }
   // }, [])
-
-  function getInitialTodos() {
-  // getting stored items
-    const temp = localStorage.getItem('todos');
-    const savedTodos = JSON.parse(temp);
-    return savedTodos || [];
-  }
 
   return (
     <div className="container">

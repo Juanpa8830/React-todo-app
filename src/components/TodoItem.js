@@ -1,17 +1,20 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
+import PropTypes from 'prop-types';
 import './styles/TodoItem.css';
 import { FaTrash } from 'react-icons/fa';
 
 export default function TodoItem(props) {
   const [edit, setEdit] = useState(false);
 
+  const {
+    handleCheck, todo, deleteTodo, setUpdate,
+  } = props;
+
   const inthandleCheck = () => {
-    const { handlecheck, todo } = props;
-    handlecheck(todo.id);
+    handleCheck(todo.id);
   };
 
   const intDeleteTodo = () => {
-    const { deleteTodo, todo } = props;
     deleteTodo(todo.id);
   };
 
@@ -35,7 +38,6 @@ export default function TodoItem(props) {
   }
 
   const intSetUpdate = (e) => {
-    const { setUpdate, todo } = props;
     setUpdate(e.target.value, todo.id);
   };
 
@@ -45,10 +47,6 @@ export default function TodoItem(props) {
     }
   };
 
-  useEffect(() => () => {
-    console.log('Cleaning up...');
-  }, []);
-
   return (
 
     <li className="item">
@@ -57,25 +55,38 @@ export default function TodoItem(props) {
         <input
           className="checkbox"
           type="checkbox"
-          checked={props.todo.completed}
+          checked={todo.completed}
           onChange={inthandleCheck}
         />
-        <button onClick={intDeleteTodo} className="item button">
+        <button type="button" onClick={intDeleteTodo} className="item button">
           {' '}
           <FaTrash />
         </button>
-        <span style={props.todo.completed ? completedStyle : null}>
-          {props.todo.title}
+        <span style={todo.completed ? completedStyle : null}>
+          {todo.title}
         </span>
       </div>
       <input
         type="text"
         style={editMode}
         className="textInput"
-        value={props.todo.title}
+        value={todo.title}
         onChange={intSetUpdate}
         onKeyDown={handleUpdatedDone}
       />
     </li>
   );
 }
+
+TodoItem.propTypes = {
+  todo: PropTypes.shape(
+    {
+      id: PropTypes.number.isRequired,
+      completed: PropTypes.number.isRequired,
+      title: PropTypes.string.isRequired,
+    },
+  ).isRequired,
+  handleCheck: PropTypes.func.isRequired,
+  deleteTodo: PropTypes.func.isRequired,
+  setUpdate: PropTypes.func.isRequired,
+};
