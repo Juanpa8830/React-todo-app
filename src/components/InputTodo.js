@@ -1,44 +1,45 @@
-import React, { useState } from "react"
-import { FaPlusCircle } from "react-icons/fa"
+import React, { useState } from 'react';
+import { FaPlusCircle } from 'react-icons/fa';
 
-const InputTodo = props => {
+const InputTodo = (props) => {
   const [inputText, setInputText] = useState({
-    title: "",
-  })
+    title: '',
+  });
 
-  const onChange = e => {
+  const onChange = (e) => {
     setInputText({
       ...inputText,
       [e.target.name]: e.target.value,
-    })
-  }
+    });
+  };
 
   const handleSubmit = (e) => {
-    e.preventDefault()
+    e.preventDefault();
     if (inputText.title.trim()) {
-      props.addTodo(inputText.title)
+      props.addTodo(inputText.title);
       setInputText({
-        title: "",
-      })
+        title: '',
+      });
     } else {
-      alert("Please write item")
+      alert('Please write item');
     }
-  }
- 
-    return (
-      <form onSubmit={handleSubmit} className='form-container'>
+  };
 
-        <input type="text" 
+  return (
+    <form onSubmit={handleSubmit} className="form-container">
+
+      <input
+        type="text"
         // required - podemos usar esta opcion o con el alert
-        placeholder="Add Todo..." 
-        value= {inputText.title} 
+        placeholder="Add Todo..."
+        value={inputText.title}
         onChange={onChange}
         name="title"
-        />
-        
-        <button className='input-submit'><FaPlusCircle /></button>
-      </form>
-    )
-    }
+      />
 
-export default InputTodo
+      <button className="input-submit"><FaPlusCircle /></button>
+    </form>
+  );
+};
+
+export default InputTodo;

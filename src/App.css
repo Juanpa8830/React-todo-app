@@ -65,16 +65,16 @@ body {
 }
 
 .todosH1 {
-font-Size: 6rem;
-font-Weight: 600;
-margin-Bottom: 2rem;
-line-Height: 1em;
-color: #ececec;
-text-Transform: lowercase;
-text-Align: center;
+  font-size: 6rem;
+  font-weight: 600;
+  margin-bottom: 2rem;
+  line-height: 1em;
+  color: #ececec;
+  text-transform: lowercase;
+  text-align: center;
 }
 
 .headerStyle {
   padding: 20px 0;
-  line-Height: 1.5em;
+  line-height: 1.5em;
 }
