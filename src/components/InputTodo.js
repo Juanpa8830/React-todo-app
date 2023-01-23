@@ -1,43 +1,44 @@
-import React, { Component } from "react"
+import React, { useState } from "react"
+import { FaPlusCircle } from "react-icons/fa"
 
-class InputTodo extends Component {
-    state = {
-        title: ""
-      };
+const InputTodo = props => {
+  const [inputText, setInputText] = useState({
+    title: "",
+  })
 
-      onChange = e => {
-        this.setState({
-            [e.target.name]: e.target.value
-        });
-      };
+  const onChange = e => {
+    setInputText({
+      ...inputText,
+      [e.target.name]: e.target.value,
+    })
+  }
 
-      handleSubmit = e => {
-        e.preventDefault();
-        if (this.state.title.trim()) {
-        this.props.addTodo(this.state.title);
-        this.setState({
-            title: ""
-          })
-        } else {
-            alert("Please write item")
-        }
-      };
-
-  render() {
+  const handleSubmit = (e) => {
+    e.preventDefault()
+    if (inputText.title.trim()) {
+      props.addTodo(inputText.title)
+      setInputText({
+        title: "",
+      })
+    } else {
+      alert("Please write item")
+    }
+  }
+ 
     return (
-      <form onSubmit={this.handleSubmit} className='form-container'>
+      <form onSubmit={handleSubmit} className='form-container'>
 
         <input type="text" 
         // required - podemos usar esta opcion o con el alert
         placeholder="Add Todo..." 
-        value= {this.state.title} 
-        onChange={this.onChange}
+        value= {inputText.title} 
+        onChange={onChange}
         name="title"
         />
         
-        <button className='input-submit'>Submit</button>
+        <button className='input-submit'><FaPlusCircle /></button>
       </form>
     )
-  }
-}
+    }
+
 export default InputTodo

@@ -1,34 +1,17 @@
 import './App.css';
-import React from "react";
+import React, { useState, useEffect } from "react";
 import TodosList from './components/TodosList'
 import Header from "./components/Header"
 import InputTodo from './components/InputTodo'
 import { v4 as uuidv4 } from "uuid";
 
-class App extends React.Component {
-  state = {
-    todos: [
-      {
-        id: 1,
-        title: "Setup development environment",
-        completed: true
-      },
-      {
-        id: 2,
-        title: "Develop website and add content",
-        completed: false
-      },
-      {
-        id: 3,
-        title: "Deploy to live server",
-        completed: false
-      }
-    ]
-  };
+const App = ()=> {
 
-  handleCheck = id => {
-    this.setState(prevState => ({
-      todos: prevState.todos.map(todo => {
+  const [todos, setTodos] = useState(getInitialTodos())
+
+  const handleCheck = id => {
+    setTodos(prevState =>
+      prevState.map(todo => {
         if (todo.id === id) {
           return {
             ...todo,
@@ -36,57 +19,80 @@ class App extends React.Component {
           }
         }
         return todo
-      }),
-    }))
-  };
-
-  deleteTodo = id => {
-    this.setState({
-      todos: [
-        ...this.state.todos.filter(todo => {
-          return todo.id !== id;
-        })
-      ]
-    });
-  };
-
-  addTodoItem = title => {
-    const newTodo = {
-      id: uuidv4(),
-      title: title,
-      completed: false
-    };
-    this.setState({
-      todos: [...this.state.todos, newTodo]
-    });
-  };
-
-
-  setUpdate = (updatedTitle, id) => {
-    this.setState({
-      todos: this.state.todos.map(todo => {
-        if (todo.id === id) {
-          todo.title = updatedTitle
-        }
-        return todo
-      }),
-    })
+      })
+    )
   }
 
-  render() {
+ const deleteTodo = id => {
+  setTodos([
+    ...todos.filter(todo => {
+      return todo.id !== id
+    }),
+  ])
+}
+
+const addTodoItem = title => {
+  const newTodo = {
+    id: uuidv4(),
+    title: title,
+    completed: false,
+  }
+  setTodos([...todos, newTodo])
+}
+
+
+const setUpdate = (updatedTitle, id) => {
+  setTodos(
+    todos.map(todo => {
+      if (todo.id === id) {
+        todo.title = updatedTitle
+      }
+      return todo
+    })
+  )
+}
+
+useEffect(() => {
+  // storing todos items
+  const temp = JSON.stringify(todos)
+  localStorage.setItem("todos", temp)
+}, [todos])
+
+// uso del useEffect
+
+// useEffect(() => {
+//   console.log("test run")
+
+//   // getting stored items
+//   const temp = localStorage.getItem("todos")
+//   const loadedTodos = JSON.parse(temp)
+
+//   if (loadedTodos) {
+//     setTodos(loadedTodos)
+//   }
+// }, [])
+
+function getInitialTodos() {
+  // getting stored items
+  const temp = localStorage.getItem("todos")
+  const savedTodos = JSON.parse(temp)
+  return savedTodos || []
+}
+
+
     return (
       <div className='container'>
         <div className='inner' >
           <Header />
-          <InputTodo addTodo={this.addTodoItem} />
+          <InputTodo addTodo={addTodoItem} />
           <TodosList
-            todos={this.state.todos}
-            handleCheck={this.handleCheck}
-            deleteTodo={this.deleteTodo} 
-            setUpdate={this.setUpdate} />
+            todos={todos}
+            handleCheck={handleCheck}
+            deleteTodo={deleteTodo} 
+            setUpdate={setUpdate} />
         </div>
       </div>
     );
   }
-};
+
 export default App;

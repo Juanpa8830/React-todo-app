@@ -1,5 +1,6 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import './styles/TodoItem.css'
+import { FaTrash } from "react-icons/fa"
 
 export default function TodoItem(props) {
 
@@ -45,7 +46,13 @@ const handleUpdatedDone = event => {
   }
 }
  
-     return (
+useEffect(() => {
+  return () => {
+    console.log("Cleaning up...")
+  }
+}, [])     
+
+return (
 
        
         <li className="item">
@@ -56,7 +63,7 @@ const handleUpdatedDone = event => {
             checked={props.todo.completed}
             onChange={inthandleCheck}
           />
-          <button onClick={intDeleteTodo} className='item button'>Delete</button>
+          <button onClick={intDeleteTodo} className='item button'> <FaTrash /></button>
           <span style={props.todo.completed ? completedStyle : null}>
             {props.todo.title}
           </span>
